@@ -1,10 +1,10 @@
 import './App.css';
 import CustomizedTables from './Components/Table';
-import Form from './Components/Form';
+import Forms from './Components/Form';
 function App() {
   return (
     <div className="app">  
-           <Form/>
+           <Forms/>
            <CustomizedTables/>
                                     
     </div>
