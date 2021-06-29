@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect,useState}from 'react';
 import { withStyles, makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -26,17 +26,16 @@ const StyledTableRow = withStyles((theme) => ({
   },
 }))(TableRow);
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function createData(name,email, mobile, dob, jobType, action) {
+  return { name,email, mobile, dob, jobType, action };
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+// const rows = [
+  // createData('Frozen yoghurt', 159, 6.0, 24, 4.0,34),
+  // createData('Ice cream sandwich', 237, 9.0, 37, 4.3,24),
+  // createData('Eclair', 262, 16.0, 24, 6.0,34),
+  // createData('Cupcake', 305, 3.7, 67, 4.3,44),
+  // createData('Gingerbread', 356, 16.0, 49, 3.9,54),
+// ];
 
 const useStyles = makeStyles({
   table: {
@@ -46,29 +45,44 @@ const useStyles = makeStyles({
 
 export default function CustomizedTables() {
   const classes = useStyles();
+  const [Rows,setRows]=useState([]);
+  useEffect(() =>{
+    fetch("https://registrationapp-backend.herokuapp.com/api/users",{
+      method: "GET",
+      headers: {"Content-type": "application/json;charset=UTF-8"}
+    })
+      .then(res => res.json())
+      .then(res=>{
+        // console.log(res);
+        setRows(res);
+      })
+      // .catch(() => this.setState({ hasErrors: true }))
+  });
 
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="customized table">
         <TableHead>
           <TableRow>
-            <StyledTableCell>Dessert (100g serving)</StyledTableCell>
-            <StyledTableCell align="right">Calories</StyledTableCell>
-            <StyledTableCell align="right">Fat&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Carbs&nbsp;(g)</StyledTableCell>
-            <StyledTableCell align="right">Protein&nbsp;(g)</StyledTableCell>
+            <StyledTableCell>Name</StyledTableCell>
+            <StyledTableCell align="right">Email</StyledTableCell>
+            <StyledTableCell align="right">Mobile</StyledTableCell>
+            <StyledTableCell align="right">DOB</StyledTableCell>
+            <StyledTableCell align="right">Job Type</StyledTableCell>
+            <StyledTableCell align="right">Action</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.name}>
+          {Rows.map((row) => (
+            <StyledTableRow key={row._id}>
               <StyledTableCell component="th" scope="row">
                 {row.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.calories}</StyledTableCell>
-              <StyledTableCell align="right">{row.fat}</StyledTableCell>
-              <StyledTableCell align="right">{row.carbs}</StyledTableCell>
-              <StyledTableCell align="right">{row.protein}</StyledTableCell>
+              <StyledTableCell align="right">{row.email}</StyledTableCell>
+              <StyledTableCell align="right">{row.mobile}</StyledTableCell>
+              <StyledTableCell align="right">{row.dob}</StyledTableCell>
+              <StyledTableCell align="right">{row.job}</StyledTableCell>
+              <StyledTableCell align="right">{row.location}</StyledTableCell>
             </StyledTableRow>
           ))}
         </TableBody>
