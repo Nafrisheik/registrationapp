@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState ,useEffect} from "react";
 import './Form.css'
 import { Button, Form, Col } from "react-bootstrap";
 // import ToggleButton from "./ToggleButtons";
@@ -14,17 +14,34 @@ function Forms() {
   const [email, setEmail] = useState("");
   const [dob, setDob] = useState("");
   const [location, setLocation] = useState("");
-  const [job, setJob] = useState("");
+  const [job, setJob] = useState("ta");
 
 
   console.log(checked1,checked2,checked3,dob);
 
 
-const [newUser,setNewUser]=useState();
-  const handleSubmit= (e) => {
-    setNewUser({
+  const handleSubmit= (e) => {    
+    const user=({
+      name:name,
+mobile:number,
+email:email,
+job:job,
+dob:dob,
+location:location,
 
     })
+    console.log(user);
+    
+      fetch("https://registrationapp-backend.herokuapp.com/api/users",{
+        method: "POST",
+        headers: {"Content-type": "application/json;charset=UTF-8"},
+        body: JSON.stringify(user)
+      })
+        .then(res => res.json())
+        .then(res=>{
+          console.log(res);
+        });
+        
     e.preventDefault();
   }
 
@@ -36,7 +53,7 @@ const [newUser,setNewUser]=useState();
         <Form.Row>
           <Form.Group as={Col} controlId="formGridEmail">
             <Form.Label>Fullname</Form.Label>
-            <Form.Control type="text" placeholder="Enter name" value={name} onChange={e => setName(e.target.value)}/>
+            <Form.Control type="text" placeholder="Enter name" required value={name} onChange={e => setName(e.target.value)}/>
           </Form.Group>
 
           <Form.Group as={Col} controlId="formGridPassword">
