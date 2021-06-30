@@ -27,7 +27,7 @@ function Forms() {
       location: location,
     };
     console.log(user);
-
+git 
     fetch("https://registrationapp-backend.herokuapp.com/api/users", {
       method: "POST",
       headers: { "Content-type": "application/json;charset=UTF-8" },
