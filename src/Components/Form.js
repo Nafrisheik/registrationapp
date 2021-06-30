@@ -3,7 +3,7 @@ import "./Form.css";
 import { Button, Form, Col } from "react-bootstrap";
 // import ToggleButton from "./ToggleButtons";
 import DOB from "./DatePicker";
-function Forms() {
+function Forms({userEdit}) {
   const [checked1, setChecked1] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [checked3, setChecked3] = useState(false);
@@ -15,7 +15,24 @@ function Forms() {
   const [location, setLocation] = useState("");
   const [job, setJob] = useState("ta");
 
-  console.log(checked1, checked2, checked3, dob);
+  const [name1, setName1] = useState("");
+  const [number1, setNumber1] = useState("");
+  const [email1, setEmail1] = useState("");
+  const [dob1, setDob1] = useState("");
+  const [location1, setLocation1] = useState("");
+  const [id,setId]=useState("");
+
+useEffect(() => {
+  if(userEdit){
+    setName1(userEdit.name);
+    setNumber1(userEdit.mobile);
+    setEmail1(userEdit.email);
+    setDob1(userEdit.dob);
+    setLocation1(userEdit.location);
+    setId(userEdit._id);
+  } 
+
+})
 
   const handleSubmit = (e) => {
     const user = {
@@ -26,19 +43,43 @@ function Forms() {
       dob: dob,
       location: location,
     };
-    console.log(user);
 
-    fetch("https://registrationapp-backend.herokuapp.com/api/users", {
-      method: "POST",
-      headers: { "Content-type": "application/json;charset=UTF-8" },
-      body: JSON.stringify(user),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        console.log(res);
-      });
+if(id){
+  fetch("https://registrationapp-backend.herokuapp.com/api/users", {
+  method: "PUT",
+  headers: { "Content-type": "application/json;charset=UTF-8" },
+  body: JSON.stringify(user),
+  params:{id:id},
+})
+  .then((res) => res.json())
+  .then((res) => {
+    console.log(res);
+  });
 
-    e.preventDefault();
+}else{
+  fetch("https://registrationapp-backend.herokuapp.com/api/users", {
+  method: "POST",
+  headers: { "Content-type": "application/json;charset=UTF-8" },
+  body: JSON.stringify(user),
+})
+  .then((res) => res.json())
+  .then((res) => {
+    console.log(res);
+  });
+e.preventDefault();
+
+}
+    // fetch("https://registrationapp-backend.herokuapp.com/api/users", {
+      // method: "POST",
+      // headers: { "Content-type": "application/json;charset=UTF-8" },
+      // body: JSON.stringify(user),
+    // })
+      // .then((res) => res.json())
+      // .then((res) => {
+        // console.log(res);
+      // });
+
+    // e.preventDefault();
   };
 
   return (
@@ -55,7 +96,7 @@ function Forms() {
               type="text"
               placeholder="Enter name"
               required
-              value={name}
+              value={name ? name:name1}
               onChange={(e) => setName(e.target.value)}
             />
           </Form.Group>
@@ -71,7 +112,7 @@ function Forms() {
             <Form.Control
               type="number"
               placeholder="Enter Number"
-              value={number}
+              value={number ? number:number1}
               onChange={(e) => setNumber(e.target.value)}
             />
           </Form.Group>
@@ -80,7 +121,7 @@ function Forms() {
             <Form.Control
               type="email"
               placeholder="Enter email"
-              value={email}
+              value={email ? email:email1}
               onChange={(e) => setEmail(e.target.value)}
             />
           </Form.Group>
@@ -121,8 +162,8 @@ function Forms() {
             {/* </Form.Control> */}
           </Form.Group>
           <Form.Group as={Col} controlId="formGridPassword">
-            <Form.Label>DOB</Form.Label>
-            <DOB addDOB={(dob) => setDob(dob)} />
+            <Form.Label>DOB</Form.Label>&nbsp;&nbsp;&nbsp;
+            <DOB addDOB={(dob) => setDob(dob? dob:dob1)} />
           </Form.Group>
         </Form.Row>
         <Form.Row>
@@ -131,7 +172,7 @@ function Forms() {
             <Form.Control
               type="text"
               placeholder="location"
-              value={location}
+              value={location ? location :location1}
               onChange={(e) => setLocation(e.target.value)}
             />
           </Form.Group>
@@ -139,7 +180,7 @@ function Forms() {
         </Form.Row>
 
         <Button variant="primary" type="submit">
-          Submit
+          + Add / Update
         </Button>
       </Form>
     </div>
