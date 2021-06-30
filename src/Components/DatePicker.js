@@ -6,11 +6,12 @@ import "react-datepicker/dist/react-datepicker.css";
 // CSS Modules, react-datepicker-cssmodules.css
 // import 'react-datepicker/dist/react-datepicker-cssmodules.css';
 
-const DOB = () => {
+const DOB = (props) => {
   const [dob, setDob] = useState(new Date());
+ 
   
   return (
-    <DatePicker selected={dob} onChange={(date) => setDob(date)} />
+    <DatePicker selected={dob} onClickOutside={props.addDOB(dob)} onChange={(date) => setDob(date)} />
   );
 };
 
