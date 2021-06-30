@@ -69,7 +69,7 @@ export default function CustomizedTables() {
             <StyledTableCell align="right">Mobile</StyledTableCell>
             <StyledTableCell align="right">DOB</StyledTableCell>
             <StyledTableCell align="right">Job Type</StyledTableCell>
-            <StyledTableCell align="right">Action</StyledTableCell>
+            <StyledTableCell align="right">Location</StyledTableCell>
           </TableRow>
         </TableHead>
         <TableBody>
